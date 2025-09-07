@@ -11,6 +11,7 @@
  * Based on the provided UI design with component-based architecture.
  */
 
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   SafeAreaView,
@@ -28,6 +29,8 @@ import { SectionHeader } from '@/components/home/SectionHeader';
 import { TransferCard, TransferData } from '@/components/home/TransferCard';
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   // State for notification banner
   const [showNotification, setShowNotification] = useState(true);
 
@@ -47,7 +50,15 @@ export default function HomeScreen() {
   const recentRecipients: RecipientData[] = [
     {
       id: '1',
-      firstName: 'Bing',
+      firstName: 'Bing(Refund)',
+      lastName: 'Chen',
+      bankName: 'Bank of China Lim...',
+      accountNumber: '6414',
+      countryCode: 'CN',
+    },
+    {
+      id: '1',
+      firstName: 'Bing(Extra Data)',
       lastName: 'Chen',
       bankName: 'Bank of China Lim...',
       accountNumber: '6414',
@@ -86,6 +97,11 @@ export default function HomeScreen() {
 
   const handleTransferPress = (transfer: TransferData) => {
     console.log('Transfer pressed:', transfer.id);
+    // Navigate to transfer detail screen
+    router.push({
+      pathname: '/transfer-detail',
+      params: { id: transfer.id }
+    });
   };
 
   const handleRecipientMore = (recipient: RecipientData) => {
@@ -94,6 +110,20 @@ export default function HomeScreen() {
 
   const handleRecipientPress = (recipient: RecipientData) => {
     console.log('Recipient pressed:', recipient.id);
+    // Navigate to refund page for the first recipient (Bing(Refund))
+    if (recipient.firstName === 'Bing(Refund)') {
+      router.push({
+        pathname: '/transfer-detail-refund',
+        params: { id: recipient.id }
+      });
+    }
+    // Navigate to extra documents page for the second recipient (Bing(Extra Data))
+    else if (recipient.firstName === 'Bing(Extra Data)') {
+      router.push({
+        pathname: '/transfer-detail-extra-docs',
+        params: { id: recipient.id }
+      });
+    }
   };
 
   const handleViewAllTransfers = () => {
