@@ -16,6 +16,7 @@
  */
 
 import { ThemedView } from '@/components/ThemedView';
+import { NotificationCard } from '@/components/home/NotificationCard';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Image } from 'expo-image';
 import { StatusBar } from 'expo-status-bar';
@@ -36,43 +37,67 @@ const { width, height } = Dimensions.get('window');
  * @returns JSX.Element - The rendered background display component
  */
 export default function Background() {
-  const colorScheme = useColorScheme();
-  const insets = useSafeAreaInsets();
+    const colorScheme = useColorScheme();
+    const insets = useSafeAreaInsets();
 
-  return (
-    <ThemedView style={styles.container}>
-      {/* Status bar with theme-aware styling */}
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+    const handlePress = () => {
+        console.log('Notification card pressed');
+    };
 
-      {/* Full width image without margins */}
-      <Image
-        source={require('@/assets/temp/home_bg.png')}
-        style={styles.backgroundImage}
-        contentFit="contain"
-        transition={300}
-        cachePolicy="memory-disk"
-        priority="high"
-        // Accessibility support
-        accessible={true}
-        accessibilityLabel="Home background image"
-        accessibilityRole="image"
-      />
-    </ThemedView>
-  );
+    return (
+        <ThemedView style={styles.container}>
+            {/* Status bar with theme-aware styling */}
+            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+
+            {/* Full width image without margins */}
+            {/* Background image as absolute positioned element */}
+            <Image
+                source={require('@/assets/temp/home_bg.png')}
+                style={styles.backgroundImage}
+                contentFit="contain"
+                transition={300}
+                cachePolicy="memory-disk"
+                priority="high"
+                // Accessibility support
+                accessible={true}
+                accessibilityLabel="Home background image"
+                accessibilityRole="image"
+            />
+
+            {/* Notification card positioned absolutely in the center */}
+            <NotificationCard
+                title="Additional info needed"
+                message="We need a quick document upload to finish your transfer..."
+                timestamp="3m ago"
+                logoSource={require('@/assets/images/logo-sonia.png')}
+                logoBackgroundColor="#FF6100"
+                visible={true}
+                onPress={handlePress}
+                lightColor="rgba(255, 255, 255, 0.9)"
+                darkColor="rgba(40, 40, 40, 0.9)"
+            />
+        </ThemedView>
+    );
 }
 
 const styles = StyleSheet.create({
-  // Main container - fills entire screen without any padding or margin
-  container: {
-    flex: 1,
-    backgroundColor: '#000000', // Fallback color while image loads
-    justifyContent: 'center', // Center the image vertically
-    alignItems: 'center', // Center the image horizontally
-  },
+    // Main container - fills entire screen and provides positioning context
+    container: {
+        flex: 1,
+        backgroundColor: '#000000', // Fallback color while image loads
+        position: 'relative', // Enable absolute positioning for children
+        justifyContent: 'center', // Center content vertically
+        alignItems: 'center', // Center content horizontally
+    },
 
-  // Background image styling - full width with auto height, no margins
-  backgroundImage: {
-    width: '100%', // Full screen width (100%)
-    height: '100%', // Full available height
-  },
+    // Background image styling - full screen coverage
+    backgroundImage: {
+        position: 'absolute', // Position behind other content
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100%',
+        height: '100%',
+    },
 });
