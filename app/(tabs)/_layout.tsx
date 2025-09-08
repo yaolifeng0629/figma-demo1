@@ -14,9 +14,26 @@ interface TabItem {
 
 function CustomTabBar() {
     const segments = useSegments();
-    const activeTab = segments[segments.length - 1] || 'index';
     const router = useRouter();
     const insets = useSafeAreaInsets();
+
+    // 获取当前活跃的tab，处理根路径和index路径
+    const currentSegment = segments[segments.length - 1];
+    let activeTab: string;
+
+    // 处理不同的路由情况
+    if (!currentSegment) {
+        // 根路径或空路径，默认为 home
+        activeTab = 'index';
+    } else if (segments.some(segment => segment === '(tabs)')) {
+        // 在 tabs 路由内，获取最后一个segment
+        const tabsIndex = segments.findIndex(segment => segment === '(tabs)');
+        const tabSegment = segments[tabsIndex + 1];
+        activeTab = tabSegment || 'index';
+    } else {
+        // 其他情况
+        activeTab = currentSegment;
+    }
 
     const tabs: TabItem[] = [
         {
@@ -82,7 +99,7 @@ function CustomTabBar() {
                             ) : (
                                 <View style={styles.tabContent}>
                                     <View style={styles.iconContainer}>
-                                        {React.cloneElement(tab.icon as React.ReactElement, {
+                                        {React.cloneElement(tab.icon as React.ReactElement<any>, {
                                             color: activeTab === tab.id ? 'black' : '#4B5563',
                                         })}
                                     </View>
@@ -102,13 +119,19 @@ function CustomTabBar() {
 export default function TabLayout() {
     return (
         <Tabs
+            initialRouteName="index" // 确保默认显示 home 页面
             screenOptions={{
                 headerShown: false,
                 tabBarStyle: { display: 'none' }, // 隐藏默认的标签栏
             }}
             tabBar={() => <CustomTabBar />} // 使用自定义标签栏
         >
-            <Tabs.Screen name="index" />
+            <Tabs.Screen
+                name="index"
+                options={{
+                    title: 'Home',
+                }}
+            />
             <Tabs.Screen name="recipients" />
             <Tabs.Screen name="send-money" />
             <Tabs.Screen name="track" />
