@@ -8,9 +8,8 @@
  */
 
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 export interface CurrencyDisplayProps {
   fromCurrency: string;
@@ -37,7 +36,7 @@ export function CurrencyDisplay({
           <ThemedText style={styles.fromCurrencyText}>
             {fromAmount} {fromCurrency}
           </ThemedText>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.exchangeButton}
             onPress={onExchangePress}
             accessible={true}
@@ -45,7 +44,7 @@ export function CurrencyDisplay({
             accessibilityLabel="Switch currencies"
           >
             <IconSymbol name="chevron.right" size={12} color="#999999" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* To Currency */}
@@ -53,7 +52,7 @@ export function CurrencyDisplay({
           <ThemedText style={styles.toCurrencyText}>
             {toAmount} {toCurrency}
           </ThemedText>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.infoButton}
             onPress={onInfoPress}
             accessible={true}
@@ -63,7 +62,7 @@ export function CurrencyDisplay({
             <View style={styles.infoIcon}>
               <ThemedText style={styles.infoText}>i</ThemedText>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>
