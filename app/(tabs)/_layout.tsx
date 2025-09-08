@@ -137,7 +137,6 @@ export default function TabLayout() {
             <Tabs.Screen name="track" />
             <Tabs.Screen name="locations" />
             <Tabs.Screen name="explore" />
-            <Tabs.Screen name="background" />
             <Tabs.Screen name="transfer-detail" />
             <Tabs.Screen name="transfer-detail-extra-docs" />
             <Tabs.Screen name="transfer-detail-refund" />

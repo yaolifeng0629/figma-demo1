@@ -1,15 +1,16 @@
 /**
- * Background.tsx
+ * Index.tsx
  *
- * A dedicated page that displays the home_bg.png image as a full-screen background.
- * This component focuses solely on showcasing the background image with optimal
- * display properties and theme support.
+ * The main home page that displays the home_bg.png image as a full-screen background.
+ * This component serves as the entry point of the application, focusing solely on
+ * showcasing the background image with optimal display properties and theme support.
  *
  * Features:
  * - Full-screen image display
  * - Responsive image scaling
  * - Theme-aware status bar
  * - Memory-efficient image loading
+ * - Navigation to tabs when notification card is pressed
  *
  * @author Team
  * @created 2024-12-28
@@ -19,6 +20,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { NotificationCard } from '@/components/home/NotificationCard';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
@@ -28,20 +30,23 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const { width, height } = Dimensions.get('window');
 
 /**
- * Background - Full-screen background image display component
+ * Index - Main home page with full-screen background image display
  *
  * Renders the home_bg.png image as a full-screen background with optimized
  * display properties. The image covers the entire screen while maintaining
  * aspect ratio and providing smooth loading transitions.
  *
- * @returns JSX.Element - The rendered background display component
+ * @returns JSX.Element - The rendered home page component
  */
-export default function Background() {
+export default function Index() {
     const colorScheme = useColorScheme();
     const insets = useSafeAreaInsets();
+    const router = useRouter();
 
     const handlePress = () => {
-        console.log('Notification card pressed');
+        console.log('Notification card pressed - navigating to tabs');
+        // Navigate to the tabs layout
+        router.push('/(tabs)');
     };
 
     return (
@@ -49,7 +54,6 @@ export default function Background() {
             {/* Status bar with theme-aware styling */}
             <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 
-            {/* Full width image without margins */}
             {/* Background image as absolute positioned element */}
             <Image
                 source={require('@/assets/temp/home_bg.png')}
