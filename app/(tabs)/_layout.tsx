@@ -87,7 +87,7 @@ function CustomTabBar() {
                 </View>
 
                 {/* Navigation Bar */}
-                <View style={styles.navBar}>
+                {/* <View style={styles.navBar}>
                     {tabs.map(tab => (
                         <TouchableOpacity key={tab.id} onPress={() => handleTabPress(tab.id)} style={styles.tabButton}>
                             {tab.isPrimary ? (
@@ -112,7 +112,7 @@ function CustomTabBar() {
                     ))}
                 </View>
             </View>
-        </View>
+        </View> */}
     );
 }
 
