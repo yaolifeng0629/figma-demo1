@@ -17,13 +17,13 @@ import { ThemedView } from '@/components/ThemedView';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import {
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    TouchableOpacity,
-    View,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export default function TransferDetailScreen() {
@@ -49,7 +49,7 @@ export default function TransferDetailScreen() {
       {
         title: 'Under review',
         description: 'Your transfer is under a standard compliance check required by U.S. financial authorities (FinCEN & OFAC)',
-        completed: true,
+        completed: false,
         current: true,
       },
       {
@@ -58,12 +58,12 @@ export default function TransferDetailScreen() {
         current: false,
       },
       {
-        title: 'Money on the way to recipient',
+        title: 'Transfer received by partner',
         completed: false,
         current: false,
       },
       {
-        title: 'Transfer received by partner',
+        title: 'Money on the way to recipient',
         completed: false,
         current: false,
       },
@@ -175,6 +175,13 @@ export default function TransferDetailScreen() {
                     {item.completed && (
                       <View style={styles.checkmark} />
                     )}
+                    {item.current && (
+                      <View style={styles.clockIcon}>
+                        <View style={styles.clockFace} />
+                        <View style={styles.clockHand} />
+                        <View style={styles.clockMinuteHand} />
+                      </View>
+                    )}
                   </View>
 
                   {/* Connecting line */}
@@ -182,7 +189,7 @@ export default function TransferDetailScreen() {
                     <View
                       style={[
                         styles.timelineLine,
-                        (item.completed || item.current) && styles.timelineLineCompleted,
+                        item.completed && styles.timelineLineCompleted,
                       ]}
                     />
                   )}
@@ -194,7 +201,8 @@ export default function TransferDetailScreen() {
                     style={[
                       styles.timelineTitle,
                       item.completed && styles.timelineTitleCompleted,
-                      !item.completed && styles.timelineTitlePending,
+                      item.current && styles.timelineTitleCurrent,
+                      !item.completed && !item.current && styles.timelineTitlePending,
                     ]}
                   >
                     {item.title}
@@ -408,16 +416,16 @@ const styles = StyleSheet.create({
   timelineIndicatorContainer: {
     alignItems: 'center',
     marginRight: 16,
-    width: 20,
+    width: 32,
     position: 'relative',
   },
 
   timelineIndicator: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     borderWidth: 2,
-    borderColor: '#C3C3C3',
+    borderColor: '#E5E5E7',
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
@@ -435,21 +443,57 @@ const styles = StyleSheet.create({
   },
 
   checkmark: {
-    width: 8,
-    height: 5,
-    borderBottomWidth: 1.5,
-    borderRightWidth: 1.5,
+    width: 10,
+    height: 6,
+    borderBottomWidth: 2,
+    borderRightWidth: 2,
     borderColor: '#FFFFFF',
     transform: [{ rotate: '45deg' }],
   },
 
+  clockIcon: {
+    width: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+
+  clockFace: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
+    position: 'absolute',
+  },
+
+  clockHand: {
+    width: 1,
+    height: 5,
+    backgroundColor: '#FFFFFF',
+    position: 'absolute',
+    top: 3,
+    borderRadius: 0.5,
+  },
+
+  clockMinuteHand: {
+    width: 1,
+    height: 7,
+    backgroundColor: '#FFFFFF',
+    position: 'absolute',
+    top: 2,
+    transform: [{ rotate: '90deg' }],
+    borderRadius: 0.5,
+  },
+
   timelineLine: {
     position: 'absolute',
-    left: 9,
-    top: 22,
+    left: 15,
+    top: 34,
     width: 2,
     height: 50,
-    backgroundColor: '#C3C3C3',
+    backgroundColor: '#E5E5E7',
     zIndex: 1,
   },
 
@@ -465,15 +509,19 @@ const styles = StyleSheet.create({
   timelineTitle: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 2,
+    marginBottom: 4,
   },
 
   timelineTitleCompleted: {
     color: '#333333',
   },
 
+  timelineTitleCurrent: {
+    color: '#333333',
+  },
+
   timelineTitlePending: {
-    color: '#8D8D8D',
+    color: '#B8B8B8',
   },
 
   timelineDate: {
@@ -486,12 +534,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#8D8D8D',
     lineHeight: 16,
-    marginBottom: 4,
+    marginBottom: 8,
   },
 
   estimatedTime: {
     fontSize: 14,
     color: '#FF6E13',
     fontWeight: '400',
+    marginTop: 4,
   },
 });
